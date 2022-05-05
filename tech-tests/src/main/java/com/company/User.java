@@ -2,14 +2,29 @@ package com.company;
 
 import java.util.ArrayList;
 
-public class User<Books> {
+
+
+public class User implements AuthService {
     public String userName;
 
     private int id;
+    private boolean isLoggedIn;
     private String firstName;
     private String lastName;
     private String password;
-    private ArrayList<Books> currentLoanedBooks = null;
+    private ArrayList<Book> currentLoanedBooks = null;
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
 
     public int getId() {
         return id;
@@ -47,11 +62,29 @@ public class User<Books> {
         this.password = password;
     }
 
-    public ArrayList<Books> getCurrentLoanedBooks() {
+    public ArrayList<Book> getCurrentLoanedBooks() {
         return currentLoanedBooks;
     }
 
-    public void setCurrentLoanedBooks(ArrayList<Books> currentLoanedBooks) {
+    public void setCurrentLoanedBooks(ArrayList<Book> currentLoanedBooks) {
         this.currentLoanedBooks = currentLoanedBooks;
+    }
+
+    @Override
+    public boolean logIn(String userName, String password) {
+        if(userName.equals(this.userName) && password.equals(this.password)){
+            setLoggedIn(true);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean logOut() {
+        if(this.isLoggedIn){
+            setLoggedIn(false);
+            return true;
+        }
+        return false;
     }
 }

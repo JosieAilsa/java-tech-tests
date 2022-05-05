@@ -9,13 +9,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Request book:");
         String bookTitle = scanner.nextLine();
-        LibraryService libraryService = new LibraryService();
+        com.company.LibraryService libraryService = new com.company.LibraryService();
         if(libraryService.loanBook(bookTitle)){
             System.out.println("Book loaned");
         } else {
             System.out.println("Error");
         };
-
-
+        libraryService.writeCurrentLibrary();
     }
 }

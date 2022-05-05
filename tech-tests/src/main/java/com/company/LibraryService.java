@@ -1,5 +1,4 @@
 package com.company;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,7 +7,10 @@ public class LibraryService {
     ArrayList<Book> currentBookList = new ArrayList<Book>();
 
     public LibraryService() throws IOException {
-        this.currentBookList = repo.readFromCSV("/Users/Josie/nology/nology-coaching/tech-tests/data/books_data.csv");
+        this.currentBookList = repo.readFromCSV("/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
+    }
+    public void writeCurrentLibrary(){
+        ArrayToJson.getJsonLibrary(currentBookList);
     }
 //
     public boolean returnBook(String title){
