@@ -16,5 +16,7 @@ public class Main {
             System.out.println("Error");
         };
         libraryService.writeCurrentLibrary();
+
+        System.out.println(JsonRepository.readJson());
     }
 }

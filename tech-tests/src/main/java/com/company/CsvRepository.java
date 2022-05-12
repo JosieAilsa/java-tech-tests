@@ -17,7 +17,7 @@ public class CsvRepository {
             try {
                int iD =  Integer.parseInt(values[0]);
                String removeQuotes =  values[1].replaceAll("\"", "");
-               Book newBook = new Book(iD,values[1],removeQuotes,values[3],values[4], values[5]);
+               Book newBook = new Book(iD,values[1],removeQuotes,values[3],values[4], values[5], false);
                currentBooks.add(newBook);
             } catch(NumberFormatException exception){
                 continue;

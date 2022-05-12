@@ -13,17 +13,20 @@ public class Book {
         return isLoaned;
     }
 
+
     public void setLoaned(boolean loaned) {
         isLoaned = loaned;
     }
 
-    public Book(int id, String title, String author, String genre, String subGenre, String publisher) {
+
+    public Book(int id, String title, String author, String genre, String subGenre, String publisher, boolean loaned) {
         this.title = title;
         this.id = id;
         this.author = author;
         this.genre = genre;
         this.subGenre = subGenre;
         this.publisher = publisher;
+        this.isLoaned = loaned;
     }
 
     public String getAuthor() {
@@ -83,6 +86,7 @@ public class Book {
                 ", genre='" + genre + '\'' +
                 ", subGenre='" + subGenre + '\'' +
                 ", publisher='" + publisher + '\'' +
+                ", isLoaned=" + isLoaned +
                 '}';
     }
 }
