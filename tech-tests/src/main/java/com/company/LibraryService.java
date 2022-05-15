@@ -1,19 +1,27 @@
 package com.company;
+import com.company.jsonrepos.LibraryJSONRepo;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class LibraryService {
-    com.company.CsvRepository repo = new com.company.CsvRepository();
     ArrayList<Book> currentBookList = new ArrayList<Book>();
 
     public LibraryService() throws IOException {
         File file = null;
-
-        this.currentBookList = repo.readFromCSV("/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
+        //See if there is a JSON file that has been created
+        try{
+            // If so read the current book list from JSON
+            this.currentBookList = LibraryJSONRepo.readJSONLibrary("/Users/Josie/java-tech-tests/tech-tests/data/library_output.json");
+        } catch(Exception e) {
+            //Else read from original CSV
+            com.company.CsvRepository repo = new com.company.CsvRepository();
+            this.currentBookList = repo.readFromCSV("/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
+        }
     }
     public void writeCurrentLibrary(){
-        JsonRepository.createJsonLibrary(currentBookList);
+        LibraryJSONRepo.createJSONLibrary(currentBookList);
     }
 //
     public boolean returnBook(String title){
@@ -40,9 +48,4 @@ public class LibraryService {
          }
          return null;
      }
-//
-//    private Book findBook(){
-//        Book book = new Book();
-//        return book;
-//    }
 }

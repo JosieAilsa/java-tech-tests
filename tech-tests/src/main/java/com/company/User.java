@@ -4,34 +4,44 @@ import java.util.ArrayList;
 
 
 
-public class User implements AuthService {
-    public String userName;
 
+public class User implements AuthService {
+    private String userName;
     private int id;
     private boolean isLoggedIn;
     private String firstName;
     private String lastName;
     private String password;
-    private ArrayList<Book> currentLoanedBooks = null;
+    private ArrayList<Book> currentLoanedBooks;
+
+    public User(String userName, int id, String firstName, String lastName, String password) {
+        this.userName = userName;
+        this.id = id;
+        this.isLoggedIn = false;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.currentLoanedBooks = new ArrayList<Book>();
+    }
+
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
+    public String getUserName() {
+        return userName;
+    }
 
-    public boolean isLoggedIn() {
+    public boolean getIsLoggedIn() {
         return isLoggedIn;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
+    public void setIsLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
     }
 
     public int getId() {
         return id;
-    }
-
-    public String getUserName() {
-        return userName;
     }
 
     public void setId(int id) {

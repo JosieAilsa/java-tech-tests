@@ -13,10 +13,7 @@ public class Main {
         if(libraryService.loanBook(bookTitle)){
             System.out.println("Book loaned");
         } else {
-            System.out.println("Error");
+            System.out.println("Sorry this book is already out on loan :( ");
         };
-        libraryService.writeCurrentLibrary();
-
-        System.out.println(JsonRepository.readJson());
     }
 }
