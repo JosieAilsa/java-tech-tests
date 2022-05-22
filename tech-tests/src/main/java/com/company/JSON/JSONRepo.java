@@ -1,4 +1,4 @@
-package com.company.jsonrepos;
+package com.company.JSON;
 
 import java.io.*;
 import org.json.simple.JSONArray;
@@ -15,8 +15,7 @@ import java.util.ArrayList;
         JSONArray data = (JSONArray) parser.parse(
                 new FileReader(path));
         //Cast to ArrayList of type object
-        ArrayList<Object> list = new ArrayList<Object>(data);
-        return list;
+        return new ArrayList<Object>(data);
     }
 
 

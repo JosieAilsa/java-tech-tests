@@ -1,5 +1,5 @@
 package com.company;
-import com.company.jsonrepos.LibraryJSONRepo;
+import com.company.JSON.LibraryJSONRepo;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class LibraryService {
         }
     }
     public void writeCurrentLibrary(){
-        LibraryJSONRepo.createJSONLibrary(currentBookList);
+        LibraryJSONRepo.createJSONArrayOfBooks(currentBookList);
     }
 //
     public boolean returnBook(String title){

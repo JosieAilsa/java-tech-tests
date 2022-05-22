@@ -1,4 +1,4 @@
-package com.company;
+package com.company.User;
 
 public interface AuthService {
 

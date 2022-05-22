@@ -1,4 +1,4 @@
-package com.company.jsonrepos;
+package com.company.JSON;
 
 import com.company.Book;
 import org.json.simple.JSONArray;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public abstract class LibraryJSONRepo extends JSONRepo {
     //writing books to Json library
-    public static void createJSONLibrary(ArrayList<Book> currentBooks) {
+    public static JSONArray createJSONArrayOfBooks(ArrayList<Book> currentBooks) {
         JSONArray jsArray = new JSONArray();
         for (int i = 0; i < currentBooks.size(); i++) {
             JSONObject jsonObject = new JSONObject();
@@ -25,7 +25,11 @@ public abstract class LibraryJSONRepo extends JSONRepo {
             jsonObject.put("id", currentBook.getId());
             jsArray.add(jsonObject);
         }
-        writeJSONArray(jsArray,"/Users/Josie/java-tech-tests/tech-tests/data/library_output.json");
+        return jsArray;
+    }
+    public static void writeJSONArrayOfBooks(ArrayList<Book> currentBooks){
+        JSONArray currentBooksJSON = createJSONArrayOfBooks(currentBooks);
+        writeJSONArray(currentBooksJSON, "/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
     }
 
     public static ArrayList<Book> readJSONLibrary(String path) throws IOException {
@@ -35,18 +39,8 @@ public abstract class LibraryJSONRepo extends JSONRepo {
             //Loop through each item in ArrayList and create primitives to add to Book constructor
             for (int i = 0; i < listdata.size(); i++) {
                 //Cast the current object to a map
-                Map current = (Map) listdata.get(i);
-                JSONObject currentJSONObject = new JSONObject(current);
-                String title = (String) currentJSONObject.get("title");
-                String author = (String) currentJSONObject.get("author");
-                Long longString = (Long) currentJSONObject.get("id");
-                int id = longString.intValue();
-                String genre = (String) currentJSONObject.get("genre");
-                String subGenre = (String) currentJSONObject.get("subGenre");
-                String publisher = (String) currentJSONObject.get("publisher");
-                boolean isLoaned = (boolean) currentJSONObject.get("isLoaned");
-                Book newBook = new Book(id, title, author, genre, subGenre, publisher, isLoaned);
-                listOfBooks.add(newBook);
+                Map currentBook = (Map) listdata.get(i);
+                listOfBooks.add(readBook(currentBook));
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -54,5 +48,19 @@ public abstract class LibraryJSONRepo extends JSONRepo {
         }
         return listOfBooks;
 
+    }
+    public static Book readBook (Map currentBook) {
+        //Create a JSON object to add all the values to
+        JSONObject currentJSONObject = new JSONObject(currentBook);
+        //Grab each of the keys from the object
+        String title = (String) currentJSONObject.get("title");
+        String author = (String) currentJSONObject.get("author");
+        Long longString = (Long) currentJSONObject.get("id");
+        int id = longString.intValue();
+        String genre = (String) currentJSONObject.get("genre");
+        String subGenre = (String) currentJSONObject.get("subGenre");
+        String publisher = (String) currentJSONObject.get("publisher");
+        boolean isLoaned = (boolean) currentJSONObject.get("isLoaned");
+        return new Book(id, title, author, genre, subGenre, publisher, isLoaned);
     }
 }

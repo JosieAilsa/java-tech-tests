@@ -1,10 +1,11 @@
-package com.company;
+package com.company.User;
 
-import com.company.jsonrepos.UsersJSONRepo;
+import com.company.Exceptions.UserNotFoundException;
+import com.company.JSON.UsersJSONRepo;
 
 import java.util.ArrayList;
 
-public class UserRepository implements AuthService {
+public class UserRepository {
 //TODO: Create user
     //1.  Read from JSON file to see if users exist
     //2. If not create new user with id as 1 add to allUsers ArrayList
@@ -15,7 +16,7 @@ public class UserRepository implements AuthService {
 
     public UserRepository() {
         try {
-            this.allUsers = UsersJSONRepo.readJSONUsers("");
+            this.allUsers = UsersJSONRepo.readJSONUsers("/Users/Josie/java-tech-tests/tech-tests/data/users_output.json");
         }catch (Exception e){
             this.allUsers = new ArrayList<User>();
         }
@@ -28,16 +29,6 @@ public class UserRepository implements AuthService {
         return allUsers;
     }
 
-    @Override
-    public boolean logIn(String userName, String password) {
-        return false;
-    }
-
-    @Override
-    public boolean logOut() {
-        return false;
-    }
-
     public void createUser(String userName, String lastName, String firstName, String password){
             //Use the user number as the id
             int newId = allUsers.size();
@@ -45,15 +36,14 @@ public class UserRepository implements AuthService {
             User currentUser = new User(userName,newId,firstName,lastName,password);
             //Add to array of users
             allUsers.add(currentUser);
-
     }
 
-    private User findUser (String userName, String password){
+     User findUser (String userName, String password) {
         for(User user: allUsers) {
             if(user.getUserName().equals(userName) && user.getPassword().equals(password)) {
                 return user;
             }
         }
-        return null;
+        throw new UserNotFoundException();
     }
 }

@@ -1,4 +1,6 @@
-package com.company;
+package com.company.User;
+
+import com.company.Book;
 
 import java.util.ArrayList;
 
@@ -83,7 +85,7 @@ public class User implements AuthService {
     @Override
     public boolean logIn(String userName, String password) {
         if(userName.equals(this.userName) && password.equals(this.password)){
-            setLoggedIn(true);
+            setIsLoggedIn(true);
             return true;
         }
         return false;
@@ -92,7 +94,7 @@ public class User implements AuthService {
     @Override
     public boolean logOut() {
         if(this.isLoggedIn){
-            setLoggedIn(false);
+            setIsLoggedIn(false);
             return true;
         }
         return false;
