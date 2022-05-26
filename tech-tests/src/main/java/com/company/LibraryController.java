@@ -40,7 +40,6 @@ public class LibraryController {
            String lastName = logInDetails.get(1);
            String username = logInDetails.get(2);
            String password = logInDetails.get(3);
-
        }
 
     }
