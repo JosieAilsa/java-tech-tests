@@ -1,8 +1,8 @@
-package com.company.User;
+package com.company.user;
 
 public interface AuthService {
 
     public boolean logIn(String userName, String password);
-    public boolean logOut();
+    public void logOut();
 
 }

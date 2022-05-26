@@ -1,4 +1,4 @@
-package com.company.User;
+package com.company.user;
 
 import com.company.Book;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 
-public class User implements AuthService {
+public class User {
     private String userName;
     private int id;
     private boolean isLoggedIn;
@@ -16,6 +16,7 @@ public class User implements AuthService {
     private String password;
     private ArrayList<Book> currentLoanedBooks;
 
+    //Constructor for when we want to create a new user
     public User(String userName, int id, String firstName, String lastName, String password) {
         this.userName = userName;
         this.id = id;
@@ -26,6 +27,16 @@ public class User implements AuthService {
         this.currentLoanedBooks = new ArrayList<Book>();
     }
 
+    //Constructor for reading from JSON
+    public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Book> currentLoanedBooks) {
+        this.userName = userName;
+        this.id = id;
+        this.isLoggedIn = false;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.currentLoanedBooks = currentLoanedBooks;
+    }
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -82,21 +93,4 @@ public class User implements AuthService {
         this.currentLoanedBooks = currentLoanedBooks;
     }
 
-    @Override
-    public boolean logIn(String userName, String password) {
-        if(userName.equals(this.userName) && password.equals(this.password)){
-            setIsLoggedIn(true);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean logOut() {
-        if(this.isLoggedIn){
-            setIsLoggedIn(false);
-            return true;
-        }
-        return false;
-    }
 }

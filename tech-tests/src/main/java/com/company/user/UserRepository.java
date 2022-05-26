@@ -1,6 +1,6 @@
-package com.company.User;
+package com.company.user;
 
-import com.company.Exceptions.UserNotFoundException;
+import com.company.exceptions.UserNotFoundException;
 import com.company.JSON.UsersJSONRepo;
 
 import java.util.ArrayList;
@@ -30,12 +30,17 @@ public class UserRepository {
     }
 
     public void createUser(String userName, String lastName, String firstName, String password){
+        User currentUser;
+        if(allUsers.size() == 0){
+            currentUser = new User(userName,0,firstName,lastName,password);
+        } else {
             //Use the user number as the id
             int newId = allUsers.size();
             //Create a new user
-            User currentUser = new User(userName,newId,firstName,lastName,password);
-            //Add to array of users
-            allUsers.add(currentUser);
+            currentUser = new User(userName,newId,firstName,lastName,password);
+        }
+        //Add to array of users
+        allUsers.add(currentUser);
     }
 
      User findUser (String userName, String password) {
