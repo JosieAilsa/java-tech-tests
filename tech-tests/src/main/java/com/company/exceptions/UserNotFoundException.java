@@ -1,9 +1,10 @@
 package com.company.exceptions;
 
+import java.io.FileNotFoundException;
 import java.util.NoSuchElementException;
 
-public class UserNotFoundException extends NoSuchElementException {
+public class UserNotFoundException extends FileNotFoundException {
     public UserNotFoundException(){
-        super("No user exsits with that user name or password!");
+        super("No user exsits with that username or password!");
     }
 }

@@ -45,11 +45,23 @@ public abstract class ConsoleDisplay {
     }
 
     public static ArrayList<String> start() {
+        displayWelcome();
+        return getUserDetails();
+    }
+    public static void welcomeMessage(String firstname){
+        System.out.println(Colour.green(" Hi, " +  firstname + ". Welcome back!"));
+    }
+    public static void errorMessaage(String error){
+        System.out.println(Colour.red(error + " . Try again!"));
+    }
+    private static void displayWelcome(){
         try {
             ConsoleDisplay.displayFigletText("Welcome to the library");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private static ArrayList<String> getUserDetails(){
         ArrayList<String> userInputs = new ArrayList<String>();
         int option = 0;
         while (option != 1 || option != 2) {

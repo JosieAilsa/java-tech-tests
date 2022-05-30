@@ -30,7 +30,7 @@ public class UserRepository {
     }
 
     public void createUser(String userName, String lastName, String firstName, String password){
-        User currentUser;
+        User currentUser = null;
         if(allUsers.size() == 0){
             currentUser = new User(userName,0,firstName,lastName,password);
         } else {
@@ -39,11 +39,10 @@ public class UserRepository {
             //Create a new user
             currentUser = new User(userName,newId,firstName,lastName,password);
         }
-        //Add to array of users
-        allUsers.add(currentUser);
+        this.allUsers.add(currentUser);
     }
 
-     User findUser (String userName, String password) {
+    User findUser (String userName, String password) throws UserNotFoundException {
         for(User user: allUsers) {
             if(user.getUserName().equals(userName) && user.getPassword().equals(password)) {
                 return user;
