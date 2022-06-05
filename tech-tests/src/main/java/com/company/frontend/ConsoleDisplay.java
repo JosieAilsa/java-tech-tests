@@ -1,11 +1,44 @@
 package com.company.frontend;
 
 import com.github.lalyos.jfiglet.FigletFont;
-import java.io.Console;
+
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public abstract class ConsoleDisplay {
+
+    public static ArrayList<String> start() {
+        displayWelcome();
+        return getUserDetails();
+    }
+
+    public static int getMainMeuOption(){
+        int option;
+        do {
+            System.out.println(
+                    Colour.yellow("What would you like to do: " +
+                            newLine) +
+                            Colour.blue("1) Loan a book" +
+                                    newLine + "2) Return a book" +
+                                    newLine + "3) See all your loaned books" +
+                                    newLine + "4) Log out & exit"
+                            )
+            );
+            Scanner scanner = new Scanner(System.in);
+            option = scanner.nextInt();
+        }while(option < 1 && option > 4);
+        return option;
+    }
+
+    public static String getInputFromMessage(String question){
+        System.out.println(Colour.blue(question));
+        Scanner scanner = new Scanner(System.in);
+        String string = scanner.nextLine();
+        return string;
+    }
+
+
 
     private static String newLine = System.getProperty("line.separator");//This will retrieve line separator dependent on OS.
 
@@ -44,16 +77,14 @@ public abstract class ConsoleDisplay {
         return new ArrayList<String>(Arrays.asList(newFirstName, newSecondName, newUserName, newPassword));
     }
 
-    public static ArrayList<String> start() {
-        displayWelcome();
-        return getUserDetails();
-    }
     public static void welcomeMessage(String firstname){
         System.out.println(Colour.green(" Hi, " +  firstname + ". Welcome back!"));
     }
+
     public static void errorMessaage(String error){
         System.out.println(Colour.red(error + " . Try again!"));
     }
+
     private static void displayWelcome(){
         try {
             ConsoleDisplay.displayFigletText("Welcome to the library");
@@ -61,6 +92,7 @@ public abstract class ConsoleDisplay {
             e.printStackTrace();
         }
     }
+
     private static ArrayList<String> getUserDetails(){
         ArrayList<String> userInputs = new ArrayList<String>();
         int option = 0;
@@ -81,6 +113,7 @@ public abstract class ConsoleDisplay {
         }
         return userInputs;
     }
+
 
 
 

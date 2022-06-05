@@ -29,7 +29,7 @@ public class UserRepository {
         return allUsers;
     }
 
-    public void createUser(String userName, String lastName, String firstName, String password){
+    public User createUser(String firstName,String lastName,String userName,String password){
         User currentUser = null;
         if(allUsers.size() == 0){
             currentUser = new User(userName,0,firstName,lastName,password);
@@ -40,14 +40,18 @@ public class UserRepository {
             currentUser = new User(userName,newId,firstName,lastName,password);
         }
         this.allUsers.add(currentUser);
+        return currentUser;
     }
 
-    User findUser (String userName, String password) throws UserNotFoundException {
+    User findUser (String username, String password) throws UserNotFoundException {
         for(User user: allUsers) {
-            if(user.getUserName().equals(userName) && user.getPassword().equals(password)) {
+            if(user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
             }
         }
         throw new UserNotFoundException();
+    }
+    public void updateUsers(String path){
+        UsersJSONRepo.createJSONUsers(this.allUsers,path);
     }
 }

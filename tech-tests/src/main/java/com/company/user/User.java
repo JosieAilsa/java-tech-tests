@@ -8,17 +8,18 @@ import java.util.ArrayList;
 
 
 public class User {
-    private String userName;
+    private String username;
     private int id;
     private boolean isLoggedIn;
     private String firstName;
     private String lastName;
     private String password;
     private ArrayList<Book> currentLoanedBooks;
+    private ArrayList<Integer> loanedIds;
 
     //Constructor for when we want to create a new user
     public User(String userName, int id, String firstName, String lastName, String password) {
-        this.userName = userName;
+        this.username = userName;
         this.id = id;
         this.isLoggedIn = false;
         this.firstName = firstName;
@@ -29,7 +30,7 @@ public class User {
 
     //Constructor for reading from JSON
     public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Book> currentLoanedBooks) {
-        this.userName = userName;
+        this.username = userName;
         this.id = id;
         this.isLoggedIn = false;
         this.firstName = firstName;
@@ -38,11 +39,11 @@ public class User {
         this.currentLoanedBooks = currentLoanedBooks;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public boolean getIsLoggedIn() {
@@ -93,4 +94,32 @@ public class User {
         this.currentLoanedBooks = currentLoanedBooks;
     }
 
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
+    public ArrayList<Integer> getLoanedIds() {
+        return loanedIds;
+    }
+
+    public void setLoanedIds(ArrayList<Integer> loanedIds) {
+        this.loanedIds = loanedIds;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", id=" + id +
+                ", isLoggedIn=" + isLoggedIn +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", currentLoanedBooks=" + currentLoanedBooks +
+                '}';
+    }
 }

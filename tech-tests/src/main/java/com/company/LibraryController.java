@@ -16,7 +16,7 @@ public class LibraryController {
     private UserRepository userRepository;
     private LibraryService libraryService;
 
-    public void start(){
+    public void start() {
         try {
             this.userService = new UserService();
             this.libraryService = new LibraryService();
@@ -24,6 +24,24 @@ public class LibraryController {
             e.printStackTrace();
         }
         handleUserLogIn();
+        int option;
+        do {
+            System.out.println(Colour.white("Main menu"));
+            option = ConsoleDisplay.getMainMeuOption();
+            String userInput = "";
+            if (option == 1) {
+                userInput = ConsoleDisplay.getInputFromMessage("Which book would you like to loan?");
+            }
+            if (option == 2) {
+                userInput = ConsoleDisplay.getInputFromMessage("Which book would you like to return?");
+            }
+            if (option == 3) {
+                System.out.println(Colour.yellow("The books you currently have on load are:"));
+            }
+            if (option == 4) {
+                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log ou? Y or N");
+            }
+        } while (option != 5);
     }
 
     public void handleUserLogIn(){
@@ -38,7 +56,7 @@ public class LibraryController {
         }
     }
 
-    private void handleLogIn(ArrayList<String> logInDetails){
+    private void handleLogIn (ArrayList<String> logInDetails){
         String username = logInDetails.get(0);
         String password = logInDetails.get(1);
 
@@ -52,6 +70,15 @@ public class LibraryController {
                 handleUserLogIn();
             }
         } while (!isLogInSuccess);
+    }
+    private void handleLoanBook (String title){
+        Book requestedBook = libraryService.loanBook(title);
+        if(requestedBook != null){
+            User currentUser = userService.getCurrentUser();
+            ArrayList<Book> currentBooks = currentUser.getCurrentLoanedBooks();
+            currentBooks.add(requestedBook);
+            currentUser.setCurrentLoanedBooks(currentBooks);
+        }
     }
 
 }

@@ -32,13 +32,13 @@ public class LibraryService {
          }
          return false;
      }
-     public boolean loanBook(String title) {
+     public Book loanBook(String title) {
         Book currentBook = findBook(title);
         if(currentBook != null && !currentBook.isLoaned()){
             currentBook.setLoaned(true);
-            return true;
+            return currentBook;
         }
-        return false;
+        return null;
      }
      private Book findBook(String title){
          for(Book book: currentBookList) {

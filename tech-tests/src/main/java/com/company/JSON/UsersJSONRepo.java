@@ -2,13 +2,17 @@ package com.company.JSON;
 
 import com.company.Book;
 import com.company.user.User;
+import com.fasterxml.jackson.core.JsonParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+
+import static com.company.JSON.LibraryJSONRepo.readBook;
 
 public abstract class UsersJSONRepo extends JSONRepo {
     public static void createJSONUsers(ArrayList<User> users, String path) {
@@ -19,12 +23,13 @@ public abstract class UsersJSONRepo extends JSONRepo {
             jsonObject.put("id", user.getId());
             jsonObject.put("firstName", user.getFirstName());
             jsonObject.put("lastName", user.getLastName());
-            jsonObject.put("userName", user.getUserName());
+            jsonObject.put("username", user.getUsername());
             jsonObject.put("password", user.getPassword());
             jsonObject.put("isLoggedIn", user.getIsLoggedIn());
             ArrayList<Book> currentUserBookList = user.getCurrentLoanedBooks();
             JSONArray currentBookListJSON = LibraryJSONRepo.createJSONArrayOfBooks(currentUserBookList);
             jsonObject.put("currentLoanedBooks", currentBookListJSON.toJSONString());
+            jsArray.add(jsonObject);
         }
         writeJSONArray(jsArray, path);
     }
@@ -32,7 +37,6 @@ public abstract class UsersJSONRepo extends JSONRepo {
     public static ArrayList<User> readJSONUsers(String path) throws IOException, ParseException {
         //Create the array list to return
         ArrayList<User> users = new ArrayList<User>();
-        try {
             ArrayList<Object> listdata = readListFromJSON(path);
             //Loop through each item in ArrayList and create primitives to add to Book constructor
             for (int i = 0; i < listdata.size(); i++) {
@@ -45,10 +49,26 @@ public abstract class UsersJSONRepo extends JSONRepo {
                 int id = longString.intValue();
                 String username = (String) currentJSONObject.get("username");
                 String password = (String) currentJSONObject.get("password");
+                ArrayList<Book> currentUserBooks = new ArrayList<Book>();
+                String arrayOfBooks = (String) currentJSONObject.get("currentLoanedBooks");
+                JSONParser parser = new JSONParser();
+                try {
+                    Object object = (Object) parser.parse(arrayOfBooks);
+                    JSONArray jsonArray = (JSONArray) object;
+                    for(int j=0; j<jsonArray.size();j++) {
+                        Map currentMap = (Map) jsonArray.get(i);
+                        Book currentbook = readBook(currentMap);
+                        currentUserBooks.add(currentbook);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                User newUser = new User(username,id,firstName,lastName,password,currentUserBooks);
+                users.add(newUser);
             }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+            // Add the object to the json arr
         return users;
 }
+
+
 }
