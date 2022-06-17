@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 public class LibraryController {
     private UserService userService;
-    private UserRepository userRepository;
     private LibraryService libraryService;
 
     public void start() {
@@ -30,13 +29,15 @@ public class LibraryController {
             option = ConsoleDisplay.getMainMeuOption();
             String userInput = "";
             if (option == 1) {
-                userInput = ConsoleDisplay.getInputFromMessage("Which book would you like to loan?");
+                handleRequestBook();
+                continue;
             }
             if (option == 2) {
-                userInput = ConsoleDisplay.getInputFromMessage("Which book would you like to return?");
+                handleReturnBook();
+                continue;
             }
             if (option == 3) {
-                System.out.println(Colour.yellow("The books you currently have on load are:"));
+                userService.getUsersCurrentBooks();
             }
             if (option == 4) {
                 userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log ou? Y or N");
@@ -55,6 +56,32 @@ public class LibraryController {
             userService.createUser(logInDetails);
         }
     }
+    private void handleRequestBook(){
+        String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to loan");
+        Book requestedBook = libraryService.loanBook(userInput);
+        if(requestedBook != null){
+            userService.loanBookToCurrentUser(requestedBook);
+            System.out.println(Colour.blue("Successfully loaned " + userInput));
+            return;
+        }
+        System.out.println(Colour.red("Looks like that book can't be loaned or isn't stocked, try again!"));
+    }
+
+    private void handleReturnBook(){
+        String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to return");
+        //Check if the book exists in the library
+        Book bookforReturning = libraryService.returnBook(userInput);
+        if(bookforReturning  != null){
+            userService.returnCurrentUserBook(bookforReturning);
+            System.out.println(Colour.blue("Successfully returned " + userInput));
+        } else {
+            System.out.println(Colour.red("Whoops something went wrong please try again..."));
+        }
+
+
+    }
+
+
 
     private void handleLogIn (ArrayList<String> logInDetails){
         String username = logInDetails.get(0);

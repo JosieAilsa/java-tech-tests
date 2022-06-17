@@ -1,6 +1,7 @@
 package com.company.user;
 
 import com.company.Book;
+import com.company.frontend.Colour;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ public class User {
     private String lastName;
     private String password;
     private ArrayList<Book> currentLoanedBooks;
-    private ArrayList<Integer> loanedIds;
+    private ArrayList<Integer> currentLoanedBooksIds;
 
     //Constructor for when we want to create a new user
     public User(String userName, int id, String firstName, String lastName, String password) {
@@ -26,10 +27,11 @@ public class User {
         this.lastName = lastName;
         this.password = password;
         this.currentLoanedBooks = new ArrayList<Book>();
+        this.currentLoanedBooksIds = new ArrayList<Integer>();
     }
 
     //Constructor for reading from JSON
-    public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Book> currentLoanedBooks) {
+    public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Book> currentLoanedBooks, ArrayList<Integer> currentIDBooks) {
         this.username = userName;
         this.id = id;
         this.isLoggedIn = false;
@@ -38,6 +40,18 @@ public class User {
         this.password = password;
         this.currentLoanedBooks = currentLoanedBooks;
     }
+
+    public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Integer> currentIDBooks) {
+        this.username = userName;
+        this.id = id;
+        this.isLoggedIn = false;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.currentLoanedBooksIds = currentIDBooks ;
+    }
+
+
 
     public void setUsername(String userName) {
         this.username = userName;
@@ -108,6 +122,12 @@ public class User {
 
     public void setLoanedIds(ArrayList<Integer> loanedIds) {
         this.loanedIds = loanedIds;
+    }
+
+    void getCurrentLoanedBookTitles(){
+        for(Book book: currentLoanedBooks){
+            System.out.println(Colour.green(book.getTitle()));
+        }
     }
 
     @Override

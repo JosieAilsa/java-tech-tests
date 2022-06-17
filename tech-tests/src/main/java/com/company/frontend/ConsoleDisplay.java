@@ -37,6 +37,10 @@ public abstract class ConsoleDisplay {
         String string = scanner.nextLine();
         return string;
     }
+    public static String requestBookTitle(String string){
+        String bookTitle = ConsoleDisplay.getInputFromMessage(string);
+        return bookTitle.toLowerCase(Locale.ROOT).trim();
+    }
 
 
 

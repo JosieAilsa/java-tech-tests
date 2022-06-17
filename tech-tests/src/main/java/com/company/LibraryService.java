@@ -3,7 +3,9 @@ import com.company.JSON.LibraryJSONRepo;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class LibraryService {
     ArrayList<Book> currentBookList = new ArrayList<Book>();
@@ -24,25 +26,29 @@ public class LibraryService {
         LibraryJSONRepo.createJSONArrayOfBooks(currentBookList);
     }
 //
-    public boolean returnBook(String title){
-         Book currentBook = findBook(title);
+    public Book returnBook(String title){
+         Book currentBook = findBook(title, currentBookList);
          if(currentBook != null && currentBook.isLoaned()){
              currentBook.setLoaned(false);
-             return true;
+             return currentBook;
          }
-         return false;
+         return null;
      }
      public Book loanBook(String title) {
-        Book currentBook = findBook(title);
+        Book currentBook = findBook(title, currentBookList);
         if(currentBook != null && !currentBook.isLoaned()){
             currentBook.setLoaned(true);
+            writeCurrentLibrary();
             return currentBook;
         }
         return null;
      }
-     private Book findBook(String title){
-         for(Book book: currentBookList) {
-             if(book.getTitle().equals(title)) {
+
+     public Book findBook(String requestedTitle, ArrayList<Book> currentBooks){
+         for(Book book: currentBooks) {
+             String currentTitle = book.getTitle().toLowerCase(Locale.ROOT);
+             if(currentTitle.equals(requestedTitle)) {
+                 writeCurrentLibrary();
                  return book;
              }
          }
