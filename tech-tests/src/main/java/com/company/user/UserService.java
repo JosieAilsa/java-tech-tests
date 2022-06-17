@@ -73,8 +73,5 @@ public class UserService implements AuthService {
                 "currentUser=" + currentUser +
                 '}';
     }
-    public void getUsersCurrentBooks(){
-        System.out.println("The books you currently have on loan are:");
-        currentUser.getCurrentLoanedBookTitles();
-    }
 }
+

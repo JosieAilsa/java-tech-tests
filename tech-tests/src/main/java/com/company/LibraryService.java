@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class LibraryService {
-    ArrayList<Book> currentBookList = new ArrayList<Book>();
+    public ArrayList<Book> currentBookList = new ArrayList<Book>();
 
     public LibraryService() throws IOException {
         File file = null;
@@ -47,11 +47,21 @@ public class LibraryService {
      public Book findBook(String requestedTitle, ArrayList<Book> currentBooks){
          for(Book book: currentBooks) {
              String currentTitle = book.getTitle().toLowerCase(Locale.ROOT);
-             if(currentTitle.equals(requestedTitle)) {
+             if(currentTitle.equals(requestedTitle.toLowerCase(Locale.ROOT))) {
                  writeCurrentLibrary();
                  return book;
              }
          }
          return null;
      }
+    public Book findBook(Integer id){
+        for(Book book: currentBookList) {
+            Integer currentId = book.getId();
+            if(currentId.equals(id)) {
+                writeCurrentLibrary();
+                return book;
+            }
+        }
+        return null;
+    }
 }

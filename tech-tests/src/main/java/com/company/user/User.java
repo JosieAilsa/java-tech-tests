@@ -16,7 +16,7 @@ public class User {
     private String lastName;
     private String password;
     private ArrayList<Book> currentLoanedBooks;
-    private ArrayList<Integer> currentLoanedBooksIds;
+    private ArrayList<Integer> loanedIds;
 
     //Constructor for when we want to create a new user
     public User(String userName, int id, String firstName, String lastName, String password) {
@@ -27,19 +27,20 @@ public class User {
         this.lastName = lastName;
         this.password = password;
         this.currentLoanedBooks = new ArrayList<Book>();
-        this.currentLoanedBooksIds = new ArrayList<Integer>();
+        this.loanedIds = new ArrayList<Integer>();
     }
 
-    //Constructor for reading from JSON
-    public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Book> currentLoanedBooks, ArrayList<Integer> currentIDBooks) {
-        this.username = userName;
-        this.id = id;
-        this.isLoggedIn = false;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.currentLoanedBooks = currentLoanedBooks;
-    }
+//    //Constructor for reading from JSON
+//    public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Book> currentLoanedBooks) {
+//        this.username = userName;
+//        this.id = id;
+//        this.isLoggedIn = false;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.password = password;
+//        this.currentLoanedBooks = currentLoanedBooks;
+//        this.loanedIds  = new ArrayList<Integer>();
+//    }
 
     public User(String userName, int id, String firstName, String lastName, String password, ArrayList<Integer> currentIDBooks) {
         this.username = userName;
@@ -48,10 +49,12 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.currentLoanedBooksIds = currentIDBooks ;
+        this.loanedIds = currentIDBooks;
     }
 
-
+    public void addBookToUserLoanList( Integer id){
+        this.loanedIds.add(id);
+    }
 
     public void setUsername(String userName) {
         this.username = userName;
@@ -124,11 +127,6 @@ public class User {
         this.loanedIds = loanedIds;
     }
 
-    void getCurrentLoanedBookTitles(){
-        for(Book book: currentLoanedBooks){
-            System.out.println(Colour.green(book.getTitle()));
-        }
-    }
 
     @Override
     public String toString() {

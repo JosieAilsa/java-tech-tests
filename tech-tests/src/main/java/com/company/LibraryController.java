@@ -37,7 +37,7 @@ public class LibraryController {
                 continue;
             }
             if (option == 3) {
-                userService.getUsersCurrentBooks();
+                System.out.println(Colour.blue(handleShowUserLoanedBooks()));
             }
             if (option == 4) {
                 userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log ou? Y or N");
@@ -106,6 +106,16 @@ public class LibraryController {
             currentBooks.add(requestedBook);
             currentUser.setCurrentLoanedBooks(currentBooks);
         }
+    }
+    private String  handleShowUserLoanedBooks(){
+        StringBuilder titleList = new StringBuilder();
+        ArrayList<Integer> currentUserLoans = userService.getCurrentUser().getLoanedIds();
+        for(Integer id: currentUserLoans){
+            Book currentBook = libraryService.findBook(id);
+            String currentTitle = currentBook.getTitle();
+            titleList.append(currentTitle).append(", ");
+        }
+        return titleList.toString();
     }
 
 }
