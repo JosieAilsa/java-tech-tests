@@ -40,7 +40,7 @@ public class LibraryController {
                 System.out.println(Colour.blue(handleShowUserLoanedBooks()));
             }
             if (option == 4) {
-                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log ou? Y or N");
+                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log out? Y or N");
             }
         } while (option != 5);
     }
@@ -110,10 +110,18 @@ public class LibraryController {
     private String  handleShowUserLoanedBooks(){
         StringBuilder titleList = new StringBuilder();
         ArrayList<Integer> currentUserLoans = userService.getCurrentUser().getLoanedIds();
-        for(Integer id: currentUserLoans){
-            Book currentBook = libraryService.findBook(id);
+        for(int i = 0; i < currentUserLoans.size(); i++){
+            Book currentBook = libraryService.findBook(i+1);
             String currentTitle = currentBook.getTitle();
-            titleList.append(currentTitle).append(", ");
+            titleList.append(currentTitle);
+            //Don't add , if only 1 item
+//            if(currentUserLoans.size()< 1){
+//                titleList.append(currentTitle);
+//            } else if (i == (currentUserLoans.size()- 1)){
+//                titleList.append("and ").append(currentTitle);
+//            } else {
+//                titleList.append(", ").append(currentTitle);
+//            }
         }
         return titleList.toString();
     }

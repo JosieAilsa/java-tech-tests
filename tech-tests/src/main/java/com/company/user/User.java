@@ -68,7 +68,7 @@ public class User {
     }
 
     public void setIsLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
+        this.isLoggedIn = loggedIn;
     }
 
     public int getId() {

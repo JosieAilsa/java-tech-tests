@@ -48,7 +48,6 @@ public class LibraryService {
          for(Book book: currentBooks) {
              String currentTitle = book.getTitle().toLowerCase(Locale.ROOT);
              if(currentTitle.equals(requestedTitle.toLowerCase(Locale.ROOT))) {
-                 writeCurrentLibrary();
                  return book;
              }
          }
@@ -58,7 +57,6 @@ public class LibraryService {
         for(Book book: currentBookList) {
             Integer currentId = book.getId();
             if(currentId.equals(id)) {
-                writeCurrentLibrary();
                 return book;
             }
         }
