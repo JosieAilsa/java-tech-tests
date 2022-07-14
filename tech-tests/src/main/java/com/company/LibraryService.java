@@ -23,7 +23,7 @@ public class LibraryService {
         }
     }
     public void writeCurrentLibrary(){
-        LibraryJSONRepo.createJSONArrayOfBooks(currentBookList);
+        LibraryJSONRepo.writeJSONArrayOfBooks(currentBookList);
     }
 //
     public Book returnBook(String title){

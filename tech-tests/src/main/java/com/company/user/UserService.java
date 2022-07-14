@@ -26,18 +26,29 @@ public class UserService implements AuthService {
         return currentUser;
     }
 
+    public void writeCurrentUsers(){
+        userRepository.updateUsers("/Users/Josie/java-tech-tests/tech-tests/data/users_output.json");
+    }
+
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-    public void loanBookToCurrentUser(Book requestedBook){
-        ArrayList<Book> currentUserBooks = currentUser.getCurrentLoanedBooks();
-        currentUserBooks.add(requestedBook);
+    public boolean loanBookToCurrentUser(Book requestedBook){
+        int bookId = requestedBook.getId();
+        ArrayList<Integer> currentUserIds = currentUser.getLoanedIds();
+        if(currentUserIds.add(bookId)){
+            return true;
+        };
+        return false;
     }
     public boolean returnCurrentUserBook(Book requestedBook){
-        ArrayList<Book> userCurrentBooks = currentUser.getCurrentLoanedBooks();
-        userCurrentBooks.remove(requestedBook);
-        return true;
-    }
+        int bookId = requestedBook.getId();
+        ArrayList<Integer> currentUserIds = currentUser.getLoanedIds();
+        if(currentUserIds.remove(bookId) == bookId){
+            return true;
+        };
+        return false;
+    };
 
 
     @Override

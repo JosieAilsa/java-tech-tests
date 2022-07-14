@@ -60,21 +60,29 @@ public class LibraryController {
         String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to loan");
         Book requestedBook = libraryService.loanBook(userInput);
         if(requestedBook != null){
-            userService.loanBookToCurrentUser(requestedBook);
-            System.out.println(Colour.blue("Successfully loaned " + userInput));
-            return;
+            boolean isSuccessfulLoan = userService.loanBookToCurrentUser(requestedBook);
+           if(isSuccessfulLoan) {
+               System.out.println(Colour.blue("Successfully loaned " + userInput));
+               libraryService.writeCurrentLibrary();
+               userService.writeCurrentUsers();
+               return;
+           }
+
         }
         System.out.println(Colour.red("Looks like that book can't be loaned or isn't stocked, try again!"));
+
     }
 
     private void handleReturnBook(){
         String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to return");
         //Check if the book exists in the library
         Book bookforReturning = libraryService.returnBook(userInput);
-        if(bookforReturning  != null){
-            userService.returnCurrentUserBook(bookforReturning);
-            System.out.println(Colour.blue("Successfully returned " + userInput));
-        } else {
+        if(bookforReturning != null){
+            boolean isSuccessfulReturn = userService.returnCurrentUserBook(bookforReturning);
+            if(isSuccessfulReturn){
+                System.out.println(Colour.blue("Successfully returned " + userInput));
+                return;
+            };
             System.out.println(Colour.red("Whoops something went wrong please try again..."));
         }
 
@@ -113,15 +121,16 @@ public class LibraryController {
         for(int i = 0; i < currentUserLoans.size(); i++){
             Book currentBook = libraryService.findBook(i+1);
             String currentTitle = currentBook.getTitle();
-            titleList.append(currentTitle);
-            //Don't add , if only 1 item
-//            if(currentUserLoans.size()< 1){
-//                titleList.append(currentTitle);
-//            } else if (i == (currentUserLoans.size()- 1)){
-//                titleList.append("and ").append(currentTitle);
-//            } else {
-//                titleList.append(", ").append(currentTitle);
-//            }
+            ///If at first item and only one in the list add as is
+            if(currentUserLoans.size() == 1 && i == 0){
+                titleList.append(currentTitle);
+            }else if(i == currentUserLoans.size()-2){
+                titleList.append(currentTitle);
+            } else if(i == currentUserLoans.size()-1){
+                titleList.append(" and ").append(currentTitle);
+            } else {
+                titleList.append(currentTitle).append(", ");
+            }
         }
         return titleList.toString();
     }

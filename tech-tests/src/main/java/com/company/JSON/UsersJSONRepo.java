@@ -82,9 +82,6 @@ public abstract class UsersJSONRepo extends JSONRepo {
                     currentUserIdBooks.add(Math.toIntExact(currentVal));
                     System.out.println(arrayOfIds.get(i));
                 }
-//                for (String arrayOfId : (Iterable<String>) arrayOfIds) {
-//                    currentUserIdBooks.add(Integer.parseInt(arrayOfId));
-//                }
                 User newUser = new User(username,id,firstName,lastName,password,currentUserIdBooks);
                 users.add(newUser);
             }
