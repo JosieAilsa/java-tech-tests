@@ -30,6 +30,5 @@ import java.util.ArrayList;
         }
         System.out.println("JSON file created: " + jsonArray);
     }
-
 }
 

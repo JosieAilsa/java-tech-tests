@@ -12,7 +12,6 @@ public abstract class ConsoleDisplay {
         displayWelcome();
         return getUserDetails();
     }
-
     public static int getMainMeuOption(){
         int option;
         do {
@@ -30,7 +29,6 @@ public abstract class ConsoleDisplay {
         }while(option < 1 && option > 4);
         return option;
     }
-
     public static String getInputFromMessage(String question){
         System.out.println(Colour.blue(question));
         Scanner scanner = new Scanner(System.in);
@@ -117,8 +115,4 @@ public abstract class ConsoleDisplay {
         }
         return userInputs;
     }
-
-
-
-
 }

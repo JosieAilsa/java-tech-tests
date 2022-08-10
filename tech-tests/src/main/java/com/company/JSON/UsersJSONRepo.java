@@ -19,6 +19,7 @@ public abstract class UsersJSONRepo extends JSONRepo {
     public static void createJSONUsers(ArrayList<User> users, String path) {
         JSONArray jsArray = new JSONArray();
         for (int i = 0; i < users.size(); i++) {
+            //Create obj for each iser
             JSONObject jsonObject = new JSONObject();
             User user = users.get(i);
             jsonObject.put("id", user.getId());
@@ -27,12 +28,8 @@ public abstract class UsersJSONRepo extends JSONRepo {
             jsonObject.put("username", user.getUsername());
             jsonObject.put("password", user.getPassword());
             jsonObject.put("isLoggedIn", user.getIsLoggedIn());
-
-//            ArrayList<Book> currentUserBookList = user.getCurrentLoanedBooks();
-//            JSONArray currentBookListJSON = LibraryJSONRepo.createJSONArrayOfBooks(currentUserBookList);
-//            jsonObject.put("currentLoanedBooks", currentBookListJSON.toJSONString());
-//            jsArray.add(jsonObject);
             ArrayList<Integer> currentUserBooks = user.getLoanedIds();
+            //Create JSON array to add all book to
             JSONArray bookIds = new JSONArray();
             bookIds.addAll(currentUserBooks);
             jsonObject.put("loanedIds", bookIds);
@@ -46,9 +43,8 @@ public abstract class UsersJSONRepo extends JSONRepo {
         //Create the array list to return
         ArrayList<User> users = new ArrayList<User>();
             ArrayList<Object> listdata = readListFromJSON(path);
-            //Loop through each item in ArrayList and create primitives to add to Book constructor
             for (int i = 0; i < listdata.size(); i++) {
-                //Cast the current object to a map
+                //Cast the current object to a map to access for values
                 Map current = (Map) listdata.get(i);
                 JSONObject currentJSONObject = new JSONObject(current);
                 String firstName = (String) currentJSONObject.get("firstName");
@@ -57,36 +53,20 @@ public abstract class UsersJSONRepo extends JSONRepo {
                 int id = longString.intValue();
                 String username = (String) currentJSONObject.get("username");
                 String password = (String) currentJSONObject.get("password");
-//                ArrayList<Book> currentUserBooks = new ArrayList<Book>();
-//                String arrayOfBooks = (String) currentJSONObject.get("currentLoanedBooks");
-//                JSONParser parser = new JSONParser();
-//                try {
-//                    Object object = (Object) parser.parse(arrayOfBooks);
-//                    JSONArray jsonArray = (JSONArray) object;
-//                    for(int j=0; j<jsonArray.size();j++) {
-//                        Map currentMap = (Map) jsonArray.get(i);
-//                        Book currentbook = readBook(currentMap);
-//                        currentUserBooks.add(currentbook);
-//                    }
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-
-//                User newUser = new User(username,id,firstName,lastName,password,currentUserBooks);
-                //Try to use
-                //Create array for bookids
-                ArrayList<Integer> currentUserIdBooks = new ArrayList<Integer>();
                 JSONArray arrayOfIds = (JSONArray) currentJSONObject.get("loanedIds");
-                for(int j = 0;j < arrayOfIds.size(); j ++ ){
-                    Long currentVal = (Long) arrayOfIds.get(i);
-                    currentUserIdBooks.add(Math.toIntExact(currentVal));
-                    System.out.println(arrayOfIds.get(i));
-                }
+                ArrayList<Integer> currentUserIdBooks = getUserBooksIDs(arrayOfIds);
                 User newUser = new User(username,id,firstName,lastName,password,currentUserIdBooks);
                 users.add(newUser);
             }
-            // Add the object to the json arr
         return users;
+}
+private static ArrayList<Integer> getUserBooksIDs(JSONArray booksFromJSONArray){
+        ArrayList<Integer> currentUserIdBooks = new ArrayList<Integer>();
+        for(int i = 0;i < booksFromJSONArray.size(); i ++ ){
+        Long currentID = (Long) booksFromJSONArray.get(i);
+        currentUserIdBooks.add(currentID.intValue());
+    }
+        return currentUserIdBooks;
 }
 
 

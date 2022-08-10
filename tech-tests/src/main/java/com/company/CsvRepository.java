@@ -26,7 +26,4 @@ public class CsvRepository {
         return currentBooks;
     }
 
-    public Book findByName(String name) {
-        return null;
-    }
 }
