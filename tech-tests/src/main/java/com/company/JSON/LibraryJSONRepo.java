@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -42,9 +43,8 @@ public abstract class LibraryJSONRepo extends JSONRepo {
                 Map currentBook = (Map) listdata.get(i);
                 listOfBooks.add(readBook(currentBook));
             }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-            throw new IOException("No file found");
+        } catch (IOException| ParseException e) {
+            throw new IOException("Error!");
         }
         return listOfBooks;
 

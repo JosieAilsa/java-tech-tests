@@ -10,23 +10,32 @@ import java.util.Locale;
 public class LibraryService {
     public ArrayList<Book> currentBookList = new ArrayList<Book>();
 
+    public ArrayList<Book> getCurrentBookList() {
+        return currentBookList;
+    }
+
+    public void setCurrentBookList(ArrayList<Book> currentBookList) {
+        this.currentBookList = currentBookList;
+    }
+
     public LibraryService() throws IOException {
-        File file = null;
         //See if there is a JSON file that has been created
         try{
             // If so read the current book list from JSON
             this.currentBookList = LibraryJSONRepo.readJSONLibrary("/Users/Josie/java-tech-tests/tech-tests/data/library_output.json");
         } catch(Exception e) {
             //Else read from original CSV
+            System.out.println("Caught!");
             com.company.CsvRepository repo = new com.company.CsvRepository();
-            this.currentBookList = repo.readFromCSV("/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
+            this.currentBookList = repo.readFromCSV("tech-tests/data/books_data.csv");
+            throw new IOException();
         }
     }
     public void writeCurrentLibrary(){
         LibraryJSONRepo.writeJSONArrayOfBooks(currentBookList);
     }
 //
-    public Book returnBook(String title){
+     Book returnBook(String title){
          Book currentBook = findBook(title, currentBookList);
          if(currentBook != null && currentBook.isLoaned()){
              currentBook.setLoaned(false);
@@ -34,10 +43,15 @@ public class LibraryService {
          }
          return null;
      }
-     public Book loanBook(String title) {
+
+
+     Book loanBook(String title, ArrayList<Book> currentBookList) {
         Book currentBook = findBook(title, currentBookList);
+        int index = currentBookList.indexOf(currentBook);
         if(currentBook != null && !currentBook.isLoaned()){
             currentBook.setLoaned(true);
+            currentBookList.set(index,currentBook);
+            this.currentBookList = currentBookList;
             writeCurrentLibrary();
             return currentBook;
         }

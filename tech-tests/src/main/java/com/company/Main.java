@@ -11,9 +11,12 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-////        // write your code here
-        LibraryController libraryController = new LibraryController();
-        libraryController.start();
+//////        // write your code here
+//        LibraryController libraryController = new LibraryController();
+//        libraryController.start();
+        CsvRepository csv = new CsvRepository();
+        ArrayList<Book> books = csv.readFromCSV("/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
+        System.out.println(books.toString());
 
 
 //        UserService userService = new UserService();

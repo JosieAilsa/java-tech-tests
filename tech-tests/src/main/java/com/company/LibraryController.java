@@ -56,7 +56,7 @@ public class LibraryController {
 
     private void handleRequestBook(){
         String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to loan");
-        Book requestedBook = libraryService.loanBook(userInput);
+        Book requestedBook = libraryService.loanBook(userInput,libraryService.getCurrentBookList());
         if(requestedBook != null){
             boolean isSuccessfulLoan = userService.loanBookToCurrentUser(requestedBook);
            if(isSuccessfulLoan) {
