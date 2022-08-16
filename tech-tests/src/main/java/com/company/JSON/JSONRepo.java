@@ -8,8 +8,13 @@ import java.util.ArrayList;
 
  abstract class JSONRepo {
 
-    //Reads JSON and returns an ArrayList of Objects
-        static ArrayList<Object> readListFromJSON(String path) throws IOException, ParseException {
+     /**
+      * Reads JSON from a given absolute file path
+      * @param path File path of JSON Array
+      * @return An ArrayList of Objects from JSON
+      */
+
+     static ArrayList<Object> readListFromJSON(String path) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         //Use JSONObject for simple JSON and JSONArray for array of JSON.
         JSONArray data = (JSONArray) parser.parse(
@@ -19,7 +24,12 @@ import java.util.ArrayList;
     }
 
 
-    //Private method for writing either Books/Users to JSON
+     /**
+      * Writes to JSON when given a JSONArray to given absolute file path
+      * @param jsonArray JSONArray to write
+      * @param path path where to write JSON array
+      * @return void
+      */
     static void writeJSONArray(JSONArray jsonArray, String path){
         try {
             FileWriter file = new FileWriter(path);
@@ -30,6 +40,5 @@ import java.util.ArrayList;
         }
         System.out.println("JSON file created: " + jsonArray);
     }
-
 }
 

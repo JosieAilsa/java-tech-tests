@@ -2,21 +2,19 @@ package com.company.user;
 
 import com.company.exceptions.UserNotFoundException;
 import com.company.JSON.UsersJSONRepo;
+import com.company.utils.FileUtils;
 
 import java.util.ArrayList;
 
 public class UserRepository {
-//TODO: Create user
-    //1.  Read from JSON file to see if users exist
-    //2. If not create new user with id as 1 add to allUsers ArrayList
-    //3. Create a write to JSON method for after a new user is created, meaning we have an ongoing list of users
-    //4. Log in method will loop through allUsers to check .userName and .password matches
 
     private ArrayList<User> allUsers;
+    private String usersFilePath;
 
     public UserRepository() {
+        this.usersFilePath = FileUtils.getRelativeFilePath() + "/src/data/users_output.json";
         try {
-            this.allUsers = UsersJSONRepo.readJSONUsers("/Users/Josie/java-tech-tests/tech-tests/data/users_output.json");
+            this.allUsers = UsersJSONRepo.readJSONUsers(this.usersFilePath);
         }catch (Exception e){
             this.allUsers = new ArrayList<User>();
         }
@@ -51,7 +49,7 @@ public class UserRepository {
         }
         throw new UserNotFoundException();
     }
-    public void updateUsers(String path){
-        UsersJSONRepo.createJSONUsers(this.allUsers,path);
+    public void updateUsers(){
+        UsersJSONRepo.createJSONUsers(this.allUsers,this.usersFilePath);
     }
 }

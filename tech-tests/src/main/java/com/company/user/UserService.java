@@ -13,7 +13,6 @@ public class UserService implements AuthService {
     private UserRepository userRepository = new UserRepository();
     private User currentUser;
 
-
     public UserRepository getUserRepository() {
         return userRepository;
     }
@@ -26,18 +25,32 @@ public class UserService implements AuthService {
         return currentUser;
     }
 
+    public void writeCurrentUsers(){
+        userRepository.updateUsers();
+    }
+
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-    public void loanBookToCurrentUser(Book requestedBook){
-        ArrayList<Book> currentUserBooks = currentUser.getCurrentLoanedBooks();
-        currentUserBooks.add(requestedBook);
+    public boolean loanBookToCurrentUser(Book requestedBook){
+        int bookId = requestedBook.getId();
+        ArrayList<Integer> currentUserIds = currentUser.getLoanedIds();
+        if(currentUserIds.add(bookId)){
+            return true;
+        };
+        return false;
     }
     public boolean returnCurrentUserBook(Book requestedBook){
-        ArrayList<Book> userCurrentBooks = currentUser.getCurrentLoanedBooks();
-        userCurrentBooks.remove(requestedBook);
+        int bookId = requestedBook.getId();
+        ArrayList<Integer> currentUserIds = currentUser.getLoanedIds();
+        //Check if id is in the list of userBooks
+        if(!currentUserIds.contains(bookId)){
+            return false;
+        }
+        currentUserIds.remove(Integer.valueOf(bookId));
+        this.currentUser.setLoanedIds(currentUserIds);
         return true;
-    }
+    };
 
 
     @Override
@@ -56,7 +69,7 @@ public class UserService implements AuthService {
     @Override
     public void logOut() {
             currentUser.setIsLoggedIn(false);
-            userRepository.updateUsers("/Users/Josie/java-tech-tests/tech-tests/data/users_output.json");
+            userRepository.updateUsers();
     }
 
     public void createUser(ArrayList<String> createUserDetails){

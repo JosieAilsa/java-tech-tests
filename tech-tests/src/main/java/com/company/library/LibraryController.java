@@ -1,15 +1,14 @@
-package com.company;
+package com.company.library;
 
+import com.company.Book;
 import com.company.exceptions.UserNotFoundException;
 import com.company.frontend.Colour;
 import com.company.frontend.ConsoleDisplay;
-import com.company.user.User;
-import com.company.user.UserRepository;
 import com.company.user.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Locale;
 
 public class LibraryController {
     private UserService userService;
@@ -40,7 +39,11 @@ public class LibraryController {
                 System.out.println(Colour.blue(handleShowUserLoanedBooks()));
             }
             if (option == 4) {
-                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log ou? Y or N");
+                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log out? Y or N");
+                if (userInput.toLowerCase(Locale.ROOT).equals("y")){
+                    System.out.println("Goodbye!");
+                    option = 5;
+                }
             }
         } while (option != 5);
     }
@@ -56,32 +59,36 @@ public class LibraryController {
             userService.createUser(logInDetails);
         }
     }
+
     private void handleRequestBook(){
         String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to loan");
         Book requestedBook = libraryService.loanBook(userInput);
         if(requestedBook != null){
-            userService.loanBookToCurrentUser(requestedBook);
-            System.out.println(Colour.blue("Successfully loaned " + userInput));
-            return;
+            boolean isSuccessfulLoan = userService.loanBookToCurrentUser(requestedBook);
+           if(isSuccessfulLoan) {
+               System.out.println(Colour.blue("Successfully loaned " + userInput));
+               libraryService.writeCurrentLibrary();
+               userService.writeCurrentUsers();
+               return;
+           }
+
         }
-        System.out.println(Colour.red("Looks like that book can't be loaned or isn't stocked, try again!"));
+        System.out.println(Colour.red("Please request a different book"));
     }
 
     private void handleReturnBook(){
         String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to return");
         //Check if the book exists in the library
         Book bookforReturning = libraryService.returnBook(userInput);
-        if(bookforReturning  != null){
-            userService.returnCurrentUserBook(bookforReturning);
-            System.out.println(Colour.blue("Successfully returned " + userInput));
-        } else {
+        if(bookforReturning != null){
+            boolean isSuccessfulReturn = userService.returnCurrentUserBook(bookforReturning);
+            if(isSuccessfulReturn){
+                System.out.println(Colour.blue("Successfully returned " + userInput));
+                return;
+            };
             System.out.println(Colour.red("Whoops something went wrong please try again..."));
         }
-
-
     }
-
-
 
     private void handleLogIn (ArrayList<String> logInDetails){
         String username = logInDetails.get(0);
@@ -98,24 +105,24 @@ public class LibraryController {
             }
         } while (!isLogInSuccess);
     }
-    private void handleLoanBook (String title){
-        Book requestedBook = libraryService.loanBook(title);
-        if(requestedBook != null){
-            User currentUser = userService.getCurrentUser();
-            ArrayList<Book> currentBooks = currentUser.getCurrentLoanedBooks();
-            currentBooks.add(requestedBook);
-            currentUser.setCurrentLoanedBooks(currentBooks);
-        }
-    }
+
     private String  handleShowUserLoanedBooks(){
         StringBuilder titleList = new StringBuilder();
         ArrayList<Integer> currentUserLoans = userService.getCurrentUser().getLoanedIds();
-        for(Integer id: currentUserLoans){
-            Book currentBook = libraryService.findBook(id);
+        for(int i = 0; i < currentUserLoans.size(); i++) {
+            Book currentBook = libraryService.findBook(currentUserLoans.get(i));
             String currentTitle = currentBook.getTitle();
-            titleList.append(currentTitle).append(", ");
+            if (currentUserLoans.size() == 1 && i == 0) {
+                titleList.append(currentTitle);
+            } else if (i == currentUserLoans.size() - 2) {
+                titleList.append(currentTitle);
+            } else if (i == currentUserLoans.size() - 1) {
+                titleList.append(" and ").append(currentTitle);
+            } else {
+                titleList.append(currentTitle).append(", ");
+            }
         }
-        return titleList.toString();
+        return titleList.toString().isEmpty()? "You've got no books on loan at the moment!": titleList.toString();
     }
 
 }

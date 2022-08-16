@@ -12,9 +12,8 @@ public abstract class ConsoleDisplay {
         displayWelcome();
         return getUserDetails();
     }
-
     public static int getMainMeuOption(){
-        int option;
+        int option = 0;
         do {
             System.out.println(
                     Colour.yellow("What would you like to do: " +
@@ -26,11 +25,16 @@ public abstract class ConsoleDisplay {
                             )
             );
             Scanner scanner = new Scanner(System.in);
-            option = scanner.nextInt();
+            if(scanner.hasNextInt()){
+                option = scanner.nextInt();
+            }
+            if((option != 1) && (option != 2) && (option != 3) && (option != 4)){
+                errorMessaage("Please select a valid option");
+                continue;
+            }
         }while(option < 1 && option > 4);
         return option;
     }
-
     public static String getInputFromMessage(String question){
         System.out.println(Colour.blue(question));
         Scanner scanner = new Scanner(System.in);
@@ -86,12 +90,12 @@ public abstract class ConsoleDisplay {
     }
 
     public static void errorMessaage(String error){
-        System.out.println(Colour.red(error + " . Try again!"));
+        System.out.println(Colour.red(error));
     }
 
     private static void displayWelcome(){
         try {
-            ConsoleDisplay.displayFigletText("Welcome to the library");
+            ConsoleDisplay.displayFigletText("Nology Library");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,7 +107,11 @@ public abstract class ConsoleDisplay {
         while (option != 1 || option != 2) {
             ConsoleDisplay.welcomeMessage();
             Scanner scanner = new Scanner(System.in);
-            option = scanner.nextInt();
+            if(scanner.hasNextInt()){
+               option = scanner.nextInt();
+            } else {
+                errorMessaage("Please enter either 1 or 2");
+            };
             if (option == 1) {
                 userInputs = ConsoleDisplay.getUserLogInDetails();
                 break;
@@ -113,12 +121,10 @@ public abstract class ConsoleDisplay {
                 userInputs = ConsoleDisplay.createAccount();
                 break;
             }
-            System.out.println(Colour.red("Whoops, please press 1 or 2!"));
+            errorMessaage("Please enter either 1 or 2");
         }
         return userInputs;
     }
-
-
 
 
 }
