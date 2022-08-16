@@ -14,6 +14,7 @@ public class UserService implements AuthService {
     private User currentUser;
 
 
+
     public UserRepository getUserRepository() {
         return userRepository;
     }
@@ -27,7 +28,7 @@ public class UserService implements AuthService {
     }
 
     public void writeCurrentUsers(){
-        userRepository.updateUsers("/Users/Josie/java-tech-tests/tech-tests/data/users_output.json");
+        userRepository.updateUsers();
     }
 
     public void setCurrentUser(User currentUser) {
@@ -67,7 +68,7 @@ public class UserService implements AuthService {
     @Override
     public void logOut() {
             currentUser.setIsLoggedIn(false);
-            userRepository.updateUsers("/Users/Josie/java-tech-tests/tech-tests/data/users_output.json");
+            userRepository.updateUsers();
     }
 
     public void createUser(ArrayList<String> createUserDetails){

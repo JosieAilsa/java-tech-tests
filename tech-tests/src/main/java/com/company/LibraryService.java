@@ -1,5 +1,6 @@
 package com.company;
 import com.company.JSON.LibraryJSONRepo;
+import com.company.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,10 +26,8 @@ public class LibraryService {
             this.currentBookList = LibraryJSONRepo.readJSONLibrary("/Users/Josie/java-tech-tests/tech-tests/data/library_output.json");
         } catch(Exception e) {
             //Else read from original CSV
-            System.out.println("Caught!");
             com.company.CsvRepository repo = new com.company.CsvRepository();
-            this.currentBookList = repo.readFromCSV("tech-tests/data/books_data.csv");
-            throw new IOException();
+            this.currentBookList = repo.readFromCSV(FileUtils.getRelativeFilePath() +"/src/data/books_data.csv");
         }
     }
     public void writeCurrentLibrary(){

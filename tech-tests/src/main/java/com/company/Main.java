@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.user.User;
 import com.company.user.UserService;
+import com.company.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,12 +13,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException {
 //////        // write your code here
-//        LibraryController libraryController = new LibraryController();
-//        libraryController.start();
-        CsvRepository csv = new CsvRepository();
-        ArrayList<Book> books = csv.readFromCSV("/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
-        System.out.println(books.toString());
-
+        LibraryController libraryController = new LibraryController();
+        libraryController.start();
+//
+//        CsvRepository csv = new CsvRepository();
+//        ArrayList<Book> books = csv.readFromCSV(FileUtils.getRelativeFilePath() +"/src/data/books_data.csv");
+//        System.out.println(books.toString());
+//
 
 //        UserService userService = new UserService();
 ////

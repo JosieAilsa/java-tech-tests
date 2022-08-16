@@ -1,16 +1,13 @@
 package com.company.JSON;
 
-import com.company.Book;
 import com.company.user.User;
-import com.fasterxml.jackson.core.JsonParser;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import static com.company.JSON.LibraryJSONRepo.readBook;

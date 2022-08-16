@@ -2,8 +2,6 @@ package com.company;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class CsvRepository {
 
@@ -17,8 +15,8 @@ public class CsvRepository {
                System.out.println("Nothing here");
                throw new IOException();
            }
-           String eachLine = bufferedReader.readLine();
-           while(eachLine != null ){
+           String eachLine;
+           while((eachLine = bufferedReader.readLine()) != null){
                String[] values = eachLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                try {
                    int iD =  Integer.parseInt(values[0]);
