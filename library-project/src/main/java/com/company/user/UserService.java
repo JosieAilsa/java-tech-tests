@@ -77,7 +77,8 @@ public class UserService implements AuthService {
         String lastName = createUserDetails.get(1);
         String username = createUserDetails.get(2);
         String password = createUserDetails.get(3);
-        this.currentUser =  userRepository.createUser(firstName,lastName,username,password);
+        boolean isAdmin = ConsoleDisplay.checkIsAdmin();
+        this.currentUser =  userRepository.handleCreateUser(firstName,lastName, username, password, isAdmin);
     }
 
     @Override

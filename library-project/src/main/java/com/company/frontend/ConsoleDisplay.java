@@ -2,6 +2,7 @@ package com.company.frontend;
 
 import com.github.lalyos.jfiglet.FigletFont;
 
+import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.*;
@@ -45,7 +46,19 @@ public abstract class ConsoleDisplay {
         String bookTitle = ConsoleDisplay.getInputFromMessage(string);
         return bookTitle.toLowerCase(Locale.ROOT).trim();
     }
-
+    public static boolean checkIsAdmin (){
+        while(true) {
+            System.out.println(Colour.blue("Are you an admin? Type Y or N"));
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine().replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
+            if (input.equals("y")) {
+                return true;
+            }
+            if (input.equals("n")) {
+                return false;
+            }
+        }
+    }
 
 
     private static String newLine = System.getProperty("line.separator");//This will retrieve line separator dependent on OS.
@@ -84,6 +97,7 @@ public abstract class ConsoleDisplay {
         String newPassword = getUserInputString("Create a new password");
         return new ArrayList<String>(Arrays.asList(newFirstName, newSecondName, newUserName, newPassword));
     }
+
 
     public static void welcomeMessage(String firstname){
         System.out.println(Colour.green(" Hi, " +  firstname + ". Welcome back!"));

@@ -1,5 +1,6 @@
 package com.company.JSON;
 
+import com.company.user.AdminUser;
 import com.company.user.User;
 
 import org.json.simple.JSONArray;
@@ -25,6 +26,9 @@ public abstract class UsersJSONRepo extends JSONRepo {
             jsonObject.put("username", user.getUsername());
             jsonObject.put("password", user.getPassword());
             jsonObject.put("isLoggedIn", user.getIsLoggedIn());
+            if(user instanceof AdminUser){
+                jsonObject.put("isAdmin", true);
+            }
             ArrayList<Integer> currentUserBooks = user.getLoanedIds();
             //Create JSON array to add all book to
             JSONArray bookIds = new JSONArray();
@@ -52,19 +56,33 @@ public abstract class UsersJSONRepo extends JSONRepo {
                 String password = (String) currentJSONObject.get("password");
                 JSONArray arrayOfIds = (JSONArray) currentJSONObject.get("loanedIds");
                 ArrayList<Integer> currentUserIdBooks = getUserBooksIDs(arrayOfIds);
-                User newUser = new User(username,id,firstName,lastName,password,currentUserIdBooks);
+                User newUser;
+                boolean isAdmin = checkIfJSONUserIsAdmin(currentJSONObject);
+                if(isAdmin){
+                    newUser = new AdminUser(username,id,firstName,lastName,password,currentUserIdBooks);
+                } else {
+                    newUser = new User(username,id,firstName,lastName,password,currentUserIdBooks);
+                }
                 users.add(newUser);
             }
         return users;
 }
 private static ArrayList<Integer> getUserBooksIDs(JSONArray booksFromJSONArray){
-        ArrayList<Integer> currentUserIdBooks = new ArrayList<Integer>();
-        for(int i = 0;i < booksFromJSONArray.size(); i ++ ){
-        Long currentID = (Long) booksFromJSONArray.get(i);
-        currentUserIdBooks.add(currentID.intValue());
-    }
-        return currentUserIdBooks;
+    ArrayList<Integer> currentUserIdBooks = new ArrayList<Integer>();
+    for(int i = 0;i < booksFromJSONArray.size(); i ++ ){
+    Long currentID = (Long) booksFromJSONArray.get(i);
+    currentUserIdBooks.add(currentID.intValue());
+}
+    return currentUserIdBooks;
 }
 
+private static boolean checkIfJSONUserIsAdmin(JSONObject currentUser){
+    try{
+        currentUser.get("isAdmin");
+        return true;
+    }catch(RuntimeException rte){
+        return false;
+    }
+}
 
 }

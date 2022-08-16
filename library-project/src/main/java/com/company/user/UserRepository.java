@@ -11,6 +11,16 @@ public class UserRepository {
     private ArrayList<User> allUsers;
     private String usersFilePath;
 
+    private User createUser(String userName, int id, String firstName, String lastName, String password, boolean isAdmin){
+        User currentUser;
+        if (isAdmin){
+            currentUser = new AdminUser(userName,id,firstName,lastName,password);
+            return currentUser;
+        }
+        currentUser = new User(userName,id,firstName,lastName,password);
+        return currentUser;
+    }
+
     public UserRepository() {
         this.usersFilePath = FileUtils.getRelativeFilePath() + "/src/data/users_output.json";
         try {
@@ -27,17 +37,18 @@ public class UserRepository {
         return allUsers;
     }
 
-    public User createUser(String firstName,String lastName,String userName,String password){
+    public User handleCreateUser(String firstName,String lastName,String userName,String password, boolean isAdmin){
         User currentUser = null;
         if(allUsers.size() == 0){
-            currentUser = new User(userName,0,firstName,lastName,password);
+            currentUser = createUser(userName, 0, firstName, lastName, password,isAdmin);
         } else {
             //Use the user number as the id
             int newId = allUsers.size();
             //Create a new user
-            currentUser = new User(userName,newId,firstName,lastName,password);
+            currentUser = createUser(userName, newId, firstName, lastName, password,isAdmin);
         }
         this.allUsers.add(currentUser);
+        updateUsers();
         return currentUser;
     }
 
