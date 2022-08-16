@@ -1,5 +1,6 @@
-package com.company;
+package com.company.library;
 
+import com.company.Book;
 import com.company.exceptions.UserNotFoundException;
 import com.company.frontend.Colour;
 import com.company.frontend.ConsoleDisplay;
@@ -7,6 +8,7 @@ import com.company.user.UserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class LibraryController {
     private UserService userService;
@@ -38,6 +40,10 @@ public class LibraryController {
             }
             if (option == 4) {
                 userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log out? Y or N");
+                if (userInput.toLowerCase(Locale.ROOT).equals("y")){
+                    System.out.println("Goodbye!");
+                    option = 5;
+                }
             }
         } while (option != 5);
     }
@@ -56,7 +62,7 @@ public class LibraryController {
 
     private void handleRequestBook(){
         String userInput = ConsoleDisplay.requestBookTitle("Which book would you like to loan");
-        Book requestedBook = libraryService.loanBook(userInput,libraryService.getCurrentBookList());
+        Book requestedBook = libraryService.loanBook(userInput);
         if(requestedBook != null){
             boolean isSuccessfulLoan = userService.loanBookToCurrentUser(requestedBook);
            if(isSuccessfulLoan) {
@@ -67,7 +73,7 @@ public class LibraryController {
            }
 
         }
-        System.out.println(Colour.red("Looks like that book can't be loaned or isn't stocked, try again!"));
+        System.out.println(Colour.red("Please request a different book"));
     }
 
     private void handleReturnBook(){

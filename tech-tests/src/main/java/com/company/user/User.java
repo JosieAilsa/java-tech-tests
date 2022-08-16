@@ -27,7 +27,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.currentLoanedBooks = new ArrayList<Book>();
         this.loanedIds = new ArrayList<Integer>();
     }
 
@@ -93,13 +92,6 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Book> getCurrentLoanedBooks() {
-        return currentLoanedBooks;
-    }
-
-    public void setCurrentLoanedBooks(ArrayList<Book> currentLoanedBooks) {
-        this.currentLoanedBooks = currentLoanedBooks;
-    }
 
     public boolean isLoggedIn() {
         return isLoggedIn;
@@ -127,7 +119,6 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
-                ", currentLoanedBooks=" + currentLoanedBooks +
                 '}';
     }
 }

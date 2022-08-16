@@ -1,6 +1,7 @@
 package com.company.JSON;
 
 import com.company.Book;
+import com.company.utils.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -28,9 +29,9 @@ public abstract class LibraryJSONRepo extends JSONRepo {
         }
         return jsArray;
     }
-    public static void writeJSONArrayOfBooks(ArrayList<Book> currentBooks){
+    public static void writeJSONArrayOfBooks(ArrayList<Book> currentBooks, String filePath){
         JSONArray currentBooksJSON = createJSONArrayOfBooks(currentBooks);
-        writeJSONArray(currentBooksJSON, "/Users/Josie/java-tech-tests/tech-tests/data/books_data.csv");
+        writeJSONArray(currentBooksJSON, filePath);
     }
 
     public static ArrayList<Book> readJSONLibrary(String path) throws IOException {

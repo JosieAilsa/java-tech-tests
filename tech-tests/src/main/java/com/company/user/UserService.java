@@ -13,8 +13,6 @@ public class UserService implements AuthService {
     private UserRepository userRepository = new UserRepository();
     private User currentUser;
 
-
-
     public UserRepository getUserRepository() {
         return userRepository;
     }
@@ -45,10 +43,13 @@ public class UserService implements AuthService {
     public boolean returnCurrentUserBook(Book requestedBook){
         int bookId = requestedBook.getId();
         ArrayList<Integer> currentUserIds = currentUser.getLoanedIds();
-        if(currentUserIds.remove(bookId) == bookId){
-            return true;
-        };
-        return false;
+        //Check if id is in the list of userBooks
+        if(!currentUserIds.contains(bookId)){
+            return false;
+        }
+        currentUserIds.remove(Integer.valueOf(bookId));
+        this.currentUser.setLoanedIds(currentUserIds);
+        return true;
     };
 
 
