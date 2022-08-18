@@ -4,11 +4,9 @@ import com.company.Book;
 import com.company.exceptions.UserNotFoundException;
 import com.company.frontend.Colour;
 import com.company.frontend.ConsoleDisplay;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class UserService implements AuthService {
+public class UserService implements AuthService{
 
     private UserRepository userRepository = new UserRepository();
     private User currentUser;
@@ -24,14 +22,15 @@ public class UserService implements AuthService {
     public User getCurrentUser() {
         return currentUser;
     }
-
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
     public void writeCurrentUsers(){
         userRepository.updateUsers();
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
+
+
     public boolean loanBookToCurrentUser(Book requestedBook){
         int bookId = requestedBook.getId();
         ArrayList<Integer> currentUserIds = currentUser.getLoanedIds();
@@ -52,6 +51,12 @@ public class UserService implements AuthService {
         return true;
     };
 
+    public boolean isCurrentUserAdmin(){
+        if (this.currentUser instanceof AdminUser){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean logIn(String userName, String password) throws UserNotFoundException {
@@ -87,5 +92,7 @@ public class UserService implements AuthService {
                 "currentUser=" + currentUser +
                 '}';
     }
+
+
 }
 

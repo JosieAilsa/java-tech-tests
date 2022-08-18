@@ -17,7 +17,6 @@ public abstract class UsersJSONRepo extends JSONRepo {
     public static void createJSONUsers(ArrayList<User> users, String path) {
         JSONArray jsArray = new JSONArray();
         for (int i = 0; i < users.size(); i++) {
-            //Create obj for each iser
             JSONObject jsonObject = new JSONObject();
             User user = users.get(i);
             jsonObject.put("id", user.getId());
@@ -78,9 +77,9 @@ private static ArrayList<Integer> getUserBooksIDs(JSONArray booksFromJSONArray){
 
 private static boolean checkIfJSONUserIsAdmin(JSONObject currentUser){
     try{
-        currentUser.get("isAdmin");
-        return true;
-    }catch(RuntimeException rte){
+        boolean isAdmin = (boolean) currentUser.get("isAdmin");
+        return isAdmin;
+    }catch(NullPointerException npe){
         return false;
     }
 }

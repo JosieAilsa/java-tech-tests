@@ -1,7 +1,6 @@
 package com.company.exceptions;
 
 import java.io.FileNotFoundException;
-import java.util.NoSuchElementException;
 
 public class UserNotFoundException extends FileNotFoundException {
     public UserNotFoundException(){

@@ -4,6 +4,7 @@ import com.company.Book;
 import com.company.exceptions.UserNotFoundException;
 import com.company.frontend.Colour;
 import com.company.frontend.ConsoleDisplay;
+import com.company.user.AdminService;
 import com.company.user.UserService;
 
 import java.io.IOException;
@@ -13,39 +14,23 @@ import java.util.Locale;
 public class LibraryController {
     private UserService userService;
     private LibraryService libraryService;
+    private AdminService adminService;
+
+    // create a constructor
+    public LibraryController(UserService userService, LibraryService libraryService, AdminService adminService) {
+        this.userService = userService;
+        this.libraryService = libraryService;
+        this.adminService = adminService;
+    }
 
     public void start() {
-        try {
-            this.userService = new UserService();
-            this.libraryService = new LibraryService();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         handleUserLogIn();
-        int option;
-        do {
-            System.out.println(Colour.white("Main menu"));
-            option = ConsoleDisplay.getMainMeuOption();
-            String userInput = "";
-            if (option == 1) {
-                handleRequestBook();
-                continue;
-            }
-            if (option == 2) {
-                handleReturnBook();
-                continue;
-            }
-            if (option == 3) {
-                System.out.println(Colour.blue(handleShowUserLoanedBooks()));
-            }
-            if (option == 4) {
-                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log out? Y or N");
-                if (userInput.toLowerCase(Locale.ROOT).equals("y")){
-                    System.out.println("Goodbye!");
-                    option = 5;
-                }
-            }
-        } while (option != 5);
+        if(userService.isCurrentUserAdmin()){
+            handleAdminMainMenu();
+        } else{
+            handleMainMenu();
+        };
+
     }
 
     public void handleUserLogIn(){
@@ -90,6 +75,65 @@ public class LibraryController {
         }
     }
 
+    private void handleMainMenu () {
+        int option;
+        do {
+            System.out.println(Colour.white("Main menu"));
+            option = ConsoleDisplay.getMainMeuOption();
+            String userInput = "";
+            if (option == 1) {
+                handleRequestBook();
+                continue;
+            }
+            if (option == 2) {
+                handleReturnBook();
+                continue;
+            }
+            if (option == 3) {
+                System.out.println(Colour.blue(handleShowUserLoanedBooks()));
+            }
+            if (option == 4) {
+                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log out? Y or N");
+                if (userInput.toLowerCase(Locale.ROOT).equals("y")){
+                    System.out.println("Goodbye!");
+                    option = 5;
+                }
+            }
+        } while (option != 5);
+    }
+
+    private void handleAdminMainMenu(){
+        int option;
+        do {
+            System.out.println(Colour.white("Main menu"));
+            option = ConsoleDisplay.getAdminMainMenuOptions();
+            String userInput = "";
+            if (option == 1) {
+                handleRequestBook();
+                continue;
+            }
+            if (option == 2) {
+                handleReturnBook();
+                continue;
+            }
+            if (option == 3) {
+                System.out.println(Colour.blue(handleShowUserLoanedBooks()));
+                continue;
+            }
+            if (option == 4) {
+                showCurrentLibrary();
+                continue;
+            }
+            if (option == 6) {
+                userInput = ConsoleDisplay.getInputFromMessage("Are you sure you would like to log out? Y or N");
+                if (userInput.toLowerCase(Locale.ROOT).equals("y")){
+                    System.out.println("Goodbye!");
+                    option = 5;
+                }
+            }
+        } while (option != 6);
+    }
+
     private void handleLogIn (ArrayList<String> logInDetails){
         String username = logInDetails.get(0);
         String password = logInDetails.get(1);
@@ -104,6 +148,10 @@ public class LibraryController {
                 handleUserLogIn();
             }
         } while (!isLogInSuccess);
+    }
+
+    private void showCurrentLibrary(){
+        System.out.println((adminService.getAllBooksOnLoan(libraryService.findAllBooksOnLoan())));
     }
 
     private String  handleShowUserLoanedBooks(){
@@ -124,5 +172,7 @@ public class LibraryController {
         }
         return titleList.toString().isEmpty()? "You've got no books on loan at the moment!": titleList.toString();
     }
+
+
 
 }

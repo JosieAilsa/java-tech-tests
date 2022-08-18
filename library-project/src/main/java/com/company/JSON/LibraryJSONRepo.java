@@ -1,12 +1,10 @@
 package com.company.JSON;
 
 import com.company.Book;
-import com.company.utils.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,8 +21,9 @@ public abstract class LibraryJSONRepo extends JSONRepo {
             jsonObject.put("publisher", currentBook.getPublisher());
             jsonObject.put("title", currentBook.getTitle());
             jsonObject.put("author", currentBook.getAuthor());
-            jsonObject.put("isLoaned", currentBook.isLoaned());
+            jsonObject.put("isLoaned", currentBook.getIsLoaned());
             jsonObject.put("id", currentBook.getId());
+            jsonObject.put("loanCount", currentBook.getLoanCount());
             jsArray.add(jsonObject);
         }
         return jsArray;
@@ -62,6 +61,8 @@ public abstract class LibraryJSONRepo extends JSONRepo {
         String subGenre = (String) currentJSONObject.get("subGenre");
         String publisher = (String) currentJSONObject.get("publisher");
         boolean isLoaned = (boolean) currentJSONObject.get("isLoaned");
-        return new Book(id, title, author, genre, subGenre, publisher, isLoaned);
+        Long loanCountLong = (Long) currentJSONObject.get("loanCount");
+        int loanCount = loanCountLong.intValue();
+        return new Book(id, title, author, genre, subGenre, publisher, isLoaned, loanCount);
     }
 }

@@ -1,5 +1,7 @@
 package com.company.frontend;
 
+import com.company.Book;
+import com.company.utils.ObjectUtils;
 import com.github.lalyos.jfiglet.FigletFont;
 
 import java.awt.*;
@@ -36,6 +38,33 @@ public abstract class ConsoleDisplay {
         }while(option < 1 && option > 4);
         return option;
     }
+
+    public static int getAdminMainMenuOptions(){
+        int option = 0;
+        do {
+            System.out.println(
+                    Colour.yellow("What would you like to do: " +
+                            newLine) +
+                            Colour.blue("1) Loan a book" +
+                                    newLine + "2) Return a book" +
+                                    newLine + "3) See all your loaned books" +
+                                    newLine + "4) See all the books currently on loan" +
+                                    newLine + "5) Print library CSV report" +
+                                    newLine + "6) Log out & exit"
+                            )
+            );
+            Scanner scanner = new Scanner(System.in);
+            if(scanner.hasNextInt()){
+                option = scanner.nextInt();
+            }
+            if((option != 1) && (option != 2) && (option != 3) && (option != 4) && (option != 5) && (option != 6)){
+                errorMessaage("Please select a valid option");
+                continue;
+            }
+        }while(option < 1 && option > 7);
+        return option;
+    }
+
     public static String getInputFromMessage(String question){
         System.out.println(Colour.blue(question));
         Scanner scanner = new Scanner(System.in);
@@ -58,6 +87,26 @@ public abstract class ConsoleDisplay {
                 return false;
             }
         }
+    }
+
+    public static Formatter createTwoColumnBookTable(ArrayList<Book> listOfBooks){
+        Formatter fmt = new Formatter();
+        fmt.format("%-25s %-25s", "Book", "#Times Loaned");
+        for( Book currentBook : listOfBooks){
+            String numberOfLoans = Integer.toString(currentBook.getLoanCount());
+            fmt.format("%-25s %-25s %-25s\n",currentBook.getTitle() , numberOfLoans);
+        }
+        return fmt;
+    }
+
+    public static Formatter createFiveColumnBookTable(ArrayList<Book> listOfBooks ){
+        Formatter fmt = new Formatter();
+        fmt.format("%-25s %-25s %-25s %-25s %-25s %-25s %-25s %-25s\n", "Id", "Book", "Genre", "Author","#Times Loaned","Publisher","Sub-Genre", "Is On Loan");
+        for( Book currentBook : listOfBooks){
+            ArrayList<String> properties = getAllProperties(currentBook);
+            fmt.format("%-25s %-25s %-25s %-25s %-25s %-25s %-25s %-25s\n",properties.get(0),properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), properties.get(6),properties.get(7));
+        }
+        return fmt;
     }
 
 
@@ -105,6 +154,16 @@ public abstract class ConsoleDisplay {
 
     public static void errorMessaage(String error){
         System.out.println(Colour.red(error));
+    }
+
+    private static ArrayList<String> getAllProperties(Book currentBook){
+        ArrayList <Object> allProperties = ObjectUtils.getAllGetters(currentBook);
+        ArrayList<String> stringProperties = new ArrayList<>();
+        for(int i = allProperties.size()-1; i >= 0; i--) {
+            Object value = allProperties.get(i);
+            stringProperties.add(value.toString());
+        }
+        return stringProperties;
     }
 
     private static void displayWelcome(){

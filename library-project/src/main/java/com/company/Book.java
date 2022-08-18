@@ -8,18 +8,20 @@ public class Book {
     private String subGenre;
     private String publisher;
     private boolean isLoaned;
+    private int loanCount;
 
-    public boolean isLoaned() {
-        return isLoaned;
+    public Book(int id,String title, String author, String genre, String subGenre, String publisher) {
+        this.title = title;
+        this.id = id;
+        this.author = author;
+        this.genre = genre;
+        this.subGenre = subGenre;
+        this.publisher = publisher;
+        this.isLoaned = false;
+        this.loanCount = 0;
     }
 
-
-    public void setLoaned(boolean loaned) {
-        isLoaned = loaned;
-    }
-
-
-    public Book(int id, String title, String author, String genre, String subGenre, String publisher, boolean loaned) {
+    public Book(int id, String title, String author, String genre, String subGenre, String publisher, boolean loaned, int loanCount) {
         this.title = title;
         this.id = id;
         this.author = author;
@@ -27,8 +29,17 @@ public class Book {
         this.subGenre = subGenre;
         this.publisher = publisher;
         this.isLoaned = loaned;
+        this.loanCount = loanCount;
     }
 
+    public boolean getIsLoaned() {
+        return isLoaned;
+    }
+
+
+    public void setLoaned(boolean loaned) {
+        isLoaned = loaned;
+    }
     public String getAuthor() {
         return author;
     }
@@ -75,6 +86,14 @@ public class Book {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getLoanCount() {
+        return loanCount;
+    }
+
+    public void setLoanCount(int loanCount) {
+        this.loanCount = loanCount;
     }
 
     @Override

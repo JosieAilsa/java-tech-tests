@@ -40,7 +40,7 @@ public class LibraryService {
     }
     Book loanBook(String title) {
         Book currentBook = findBook(title, this.currentBookList);
-        if(currentBook.isLoaned()){
+        if(currentBook.getIsLoaned()){
             System.out.println(Colour.red("That book is currently on loan."));
             return null;
         }
@@ -53,7 +53,7 @@ public class LibraryService {
     }
 
     public Book findBook(Integer id){
-        for(Book book: currentBookList) {
+        for(Book book: this.currentBookList) {
             Integer currentId = book.getId();
             if(currentId.equals(id)) {
                 return book;
@@ -62,9 +62,21 @@ public class LibraryService {
         return null;
     }
 
+    public ArrayList<Book> findAllBooksOnLoan(){
+        ArrayList<Book> loanedBooks = new ArrayList<Book>();
+        for(Book book: this.currentBookList){
+            if(book.getIsLoaned()){
+                loanedBooks.add((book));
+            }
+        }
+        return loanedBooks;
+    }
+
     private void updateBookList( Book bookToUpdate, ArrayList<Book> currentBookList, boolean isOnLoan) {
         int bookIndex = currentBookList.indexOf(bookToUpdate);
         bookToUpdate.setLoaned(isOnLoan);
+        int updatedLoanCount = bookToUpdate.getLoanCount() + 1;
+        bookToUpdate.setLoanCount(updatedLoanCount);
         currentBookList.set(bookIndex,bookToUpdate);
         this.currentBookList = currentBookList;
         writeCurrentLibrary();

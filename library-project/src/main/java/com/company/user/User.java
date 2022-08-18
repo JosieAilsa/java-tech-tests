@@ -1,13 +1,9 @@
 package com.company.user;
 
 import com.company.Book;
-import com.company.frontend.Colour;
+
 
 import java.util.ArrayList;
-
-
-
-
 public class User {
     private String username;
     private int id;
@@ -19,7 +15,6 @@ public class User {
     private ArrayList<Integer> loanedIds;
 
     //For when we want to create a new user
-
     public User(String userName, int id, String firstName, String lastName, String password) {
         this.username = userName;
         this.id = id;
