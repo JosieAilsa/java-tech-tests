@@ -1,0 +1,1 @@
+[{"firstName":"Josie","lastName":"Newman","password":"password","isLoggedIn":true,"loanedIds":[4,1,2],"id":0,"username":"josienew"},{"firstName":"joe","lastName":"bloggs","password":"password","isLoggedIn":false,"loanedIds":[],"id":2,"isAdmin":true,"username":"joebloggs"}]
