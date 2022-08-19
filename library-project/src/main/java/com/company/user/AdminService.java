@@ -7,14 +7,10 @@ import java.util.ArrayList;
 import java.util.Formatter;
 
 public class AdminService implements Admin  {
-    @Override
-    public Formatter getAllBooksOnLoan(ArrayList<Book> currentBookList) {
-        return ConsoleDisplay.createTwoColumnBookTable(currentBookList);
-    }
 
     @Override
-    public void getCurrentLibraryReport() {
-
+    public Formatter getCurrentLibraryReport(ArrayList<Book> currentBooks) {
+        return ConsoleDisplay.createFiveColumnBookTable(currentBooks);
     }
 
     @Override

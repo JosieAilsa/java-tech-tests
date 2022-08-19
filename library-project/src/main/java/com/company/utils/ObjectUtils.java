@@ -10,33 +10,31 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class ObjectUtils {
-    private static boolean isGetter(Method method){
-        // identify get methods
-        if((method.getName().startsWith("get") || method.getName().startsWith("is"))
-                && method.getParameterCount() == 0 && !method.getReturnType().equals(void.class)){
-            return true;
+    public static Map<String, String> beanProperties(Object bean) {
+        try {
+            Map<String, String> map = new HashMap<>();
+            Arrays.asList(Introspector.getBeanInfo(bean.getClass(), Object.class)
+                            .getPropertyDescriptors())
+                    .stream()
+                    // filter out properties with setters only
+                    .filter(pd -> Objects.nonNull(pd.getReadMethod()))
+                    .forEach(pd -> { // invoke method to get value
+                        try {
+                            Object value = pd.getReadMethod().invoke(bean);
+                            if (value != null) {
+                                map.put(pd.getName(), value.toString());
+                            }
+                        } catch (Exception e) {
+                            // add proper error handling here
+                        }
+                    });
+            return map;
+        } catch (IntrospectionException e) {
+            // and here, too
+            return Collections.emptyMap();
         }
-        return false;
     }
-
-    public static ArrayList<Object> getAllGetters(Object object) {// get all the methods of the class
-        ArrayList<Object> values = new ArrayList<>();
-        Method[] methods = object.getClass().getDeclaredMethods();
-        // Initially calling all the set methods to set values
-        for (Method method : methods) {
-            if (isGetter(method)) {
-                try {
-                System.out.println(method.invoke(object));
-                values.add(method.invoke(object));
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-        return values;
-    }
-
 }

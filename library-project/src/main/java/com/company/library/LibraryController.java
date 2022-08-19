@@ -151,7 +151,8 @@ public class LibraryController {
     }
 
     private void showCurrentLibrary(){
-        System.out.println((adminService.getAllBooksOnLoan(libraryService.findAllBooksOnLoan())));
+
+        System.out.println(Colour.blue((adminService.getCurrentLibraryReport(libraryService.getCurrentBookList()))));
     }
 
     private String  handleShowUserLoanedBooks(){

@@ -101,10 +101,12 @@ public abstract class ConsoleDisplay {
 
     public static Formatter createFiveColumnBookTable(ArrayList<Book> listOfBooks ){
         Formatter fmt = new Formatter();
-        fmt.format("%-25s %-25s %-25s %-25s %-25s %-25s %-25s %-25s\n", "Id", "Book", "Genre", "Author","#Times Loaned","Publisher","Sub-Genre", "Is On Loan");
+        fmt.format("%-5s %-65s %-35s %-15s %-25s %-15s %-15s %-15s\n", "Id", "Book", "Author", "Genre","#Sub Genre","Publisher","# Times Loaned", "Is On Loan");
         for( Book currentBook : listOfBooks){
-            ArrayList<String> properties = getAllProperties(currentBook);
-            fmt.format("%-25s %-25s %-25s %-25s %-25s %-25s %-25s %-25s\n",properties.get(0),properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), properties.get(6),properties.get(7));
+            Map<String, String> bookMap = ObjectUtils.beanProperties(currentBook);
+//            fmt.format("%-25s %-25s %-25s %-25s %-25s %-25s %-25s %-25s\n",properties.get(0),properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), properties.get(6),properties.get(7));
+          fmt.format("%-5s %-65s %-35s %-15s %-25s %-15s %-15s %-15s\n",bookMap.get("id"),bookMap.get("title"),bookMap.get("author"), bookMap.get("genre"), bookMap.get("subGenre"), bookMap.get("publisher"), bookMap.get("loanCount"),bookMap.get("isLoaned"));
+
         }
         return fmt;
     }
@@ -156,15 +158,15 @@ public abstract class ConsoleDisplay {
         System.out.println(Colour.red(error));
     }
 
-    private static ArrayList<String> getAllProperties(Book currentBook){
-        ArrayList <Object> allProperties = ObjectUtils.getAllGetters(currentBook);
-        ArrayList<String> stringProperties = new ArrayList<>();
-        for(int i = allProperties.size()-1; i >= 0; i--) {
-            Object value = allProperties.get(i);
-            stringProperties.add(value.toString());
-        }
-        return stringProperties;
-    }
+//    private static ArrayList<String> getAllProperties(Book currentBook){
+//        H <Object> allProperties = ObjectUtils.getAllGetters(currentBook);
+//        ArrayList<String> stringProperties = new ArrayList<>();
+//        for(int i = allProperties.size()-1; i >= 0; i--) {
+//            Object value = allProperties.get(i);
+//            stringProperties.add(value.toString());
+//        }
+//        return stringProperties;
+//    }
 
     private static void displayWelcome(){
         try {

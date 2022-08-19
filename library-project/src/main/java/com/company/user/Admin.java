@@ -7,8 +7,7 @@ import java.util.Formatter;
 
 public interface Admin {
 
-    public Formatter getAllBooksOnLoan (ArrayList<Book> currentBookList);
-    public void getCurrentLibraryReport();
+    public Formatter getCurrentLibraryReport(ArrayList<Book> currentBookList);
     public void generateCSVReport();
 
 }
