@@ -1,16 +1,7 @@
 package com.company.utils;
-
-import com.company.Book;
-
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class ObjectUtils {
     public static Map<String, String> beanProperties(Object bean) {
@@ -28,7 +19,7 @@ public abstract class ObjectUtils {
                                 map.put(pd.getName(), value.toString());
                             }
                         } catch (Exception e) {
-                            // add proper error handling here
+                            throw new NullPointerException("Not a valid book!");
                         }
                     });
             return map;

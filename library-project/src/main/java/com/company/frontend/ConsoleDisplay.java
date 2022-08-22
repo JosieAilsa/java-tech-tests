@@ -103,10 +103,13 @@ public abstract class ConsoleDisplay {
         Formatter fmt = new Formatter();
         fmt.format("%-5s %-65s %-35s %-15s %-25s %-15s %-15s %-15s\n", "Id", "Book", "Author", "Genre","#Sub Genre","Publisher","# Times Loaned", "Is On Loan");
         for( Book currentBook : listOfBooks){
-            Map<String, String> bookMap = ObjectUtils.beanProperties(currentBook);
+            try {
+                Map<String, String> bookMap = ObjectUtils.beanProperties(currentBook);
 //            fmt.format("%-25s %-25s %-25s %-25s %-25s %-25s %-25s %-25s\n",properties.get(0),properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), properties.get(6),properties.get(7));
-          fmt.format("%-5s %-65s %-35s %-15s %-25s %-15s %-15s %-15s\n",bookMap.get("id"),bookMap.get("title"),bookMap.get("author"), bookMap.get("genre"), bookMap.get("subGenre"), bookMap.get("publisher"), bookMap.get("loanCount"),bookMap.get("isLoaned"));
-
+                fmt.format("%-5s %-65s %-35s %-15s %-25s %-15s %-15s %-15s\n", bookMap.get("id"), bookMap.get("title"), bookMap.get("author"), bookMap.get("genre"), bookMap.get("subGenre"), bookMap.get("publisher"), bookMap.get("loanCount"), bookMap.get("isLoaned"));
+            } catch (NullPointerException npe) {
+                fmt.format("%-5s %-65s %-35s %-15s %-25s %-15s %-15s %-15s\n", "Unavailable", "Unavailable", "Unavailable", "Unavailable", "Unavailable","Unavailable","Unavailable", "Unavailable" );
+            }
         }
         return fmt;
     }
